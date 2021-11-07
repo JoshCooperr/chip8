@@ -1,2 +1,2 @@
-# Chip8 Go
+# Chip-8 Emulator (Interpretor) in Go
 
