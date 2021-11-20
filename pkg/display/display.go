@@ -53,16 +53,15 @@ func NewDisplay() (*Display, error) {
 	}, nil
 }
 
-func (d *Display) Render(pixels []byte) {
+func (d *Display) Render(pixels [64][32]byte) {
 	d.Clear(color.Black)
 	imd := imdraw.New(nil)
 	imd.Color = pixel.RGB(1, 1, 1)
 
-	// Draw pixels from bottom left -> top right
-	// TODO: Make this top-left to bottom-right
+	// Draw pixels from top left -> bottom right
 	for x := 0; x < int(width); x++ {
 		for y := 0; y < int(height); y++ {
-			if pixels[y*64+x] != 0 {
+			if pixels[x][31-y] != 0 {
 				imd.Push(pixel.V(pixelSize*float64(x), pixelSize*float64(y)))
 				imd.Push(pixel.V(pixelSize*float64(x)+pixelSize, pixelSize*float64(y)+pixelSize))
 				imd.Rectangle(0)
