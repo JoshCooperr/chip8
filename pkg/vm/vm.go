@@ -207,8 +207,10 @@ func (vm *VM) executeCycle() {
 		case 0x0033:
 			// Binary-coded decimal conversion, get the value in vx and convert to 3 decimal digits
 			// (eg. 156 -> 1, 5, 6) and store in memory (addresses determined by index register)
-
-			panic(fmt.Errorf("not implemented: %x", vm.opcode))
+			dec := vm.variables[x]
+			vm.memory[vm.index] = dec / 100
+			vm.memory[vm.index+1] = dec / 10 % 10
+			vm.memory[vm.index+2] = dec % 10
 		case 0x0055:
 			// Save the values in the variable registers into memory (addresses determined by index register)
 			for i := 0; i < len(vm.variables); i++ {
@@ -219,8 +221,9 @@ func (vm *VM) executeCycle() {
 			for i := 0; i < len(vm.variables); i++ {
 				vm.variables[i] = vm.memory[vm.index+uint16(i)]
 			}
+		default:
+			panic(fmt.Errorf("unknown opcode: %x", vm.opcode))
 		}
-
 	}
 }
 
